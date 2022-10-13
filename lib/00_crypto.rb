@@ -1,7 +1,6 @@
 require 'nokogiri'
 require 'rubygems'
 require 'open-uri'
-require 'json'
 
 
 def scrapper
@@ -14,12 +13,21 @@ def fusiontab(tab1,tab2)
 end
 
 def crypto(page)
-    my_json = JSON.parse(page.css('script[type="application/json"]').first.inner_html)
-    cryptos = my_json["props"]["initialState"]["cryptocurrency"]["listingLatest"]["data"]
-  
-    hash = cryptos.each_with_object({}) do |crypto, hsh|
-      hsh[crypto["name"]] = crypto["quote"]["USD"]["price"]
-    end
+    array_name=[]
+    array_value=[]
+    name_of_crypto=page.xpath('//tr//td[3]')
+    # ne prends que les 20 premières valeurs. A la 21 classe style change de display:table-row à display: table-row
+
+    value_of_crypto=page.xpath('//tr//td[5]')
+    hash={}
+    name_of_crypto.each{ |name|
+        array_name<<name.text
+    }
+    value_of_crypto.each{|price|
+    array_value << price.text
+    }
+    hash=fusiontab(array_name,array_value)
+    return hash
 end
 
 puts crypto(scrapper)
