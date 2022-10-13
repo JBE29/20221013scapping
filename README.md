@@ -1,0 +1,1 @@
+Ce projet a été une énorme galère. J'ai vraiment tout recopié sur des sites ou sur les autres sans vraiment retenir comment le refaire tout seul.
